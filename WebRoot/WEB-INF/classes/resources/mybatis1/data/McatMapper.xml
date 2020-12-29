@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="McatMapper">
+
+	<resultMap id="mCatMap" type="mCat">
+		<id column="id" property="id" />
+		<result column="sceneid" property="sceneid" />
+		<result column="segmentid" property="segmentid"/>
+		<result column="jobtaskid" property="jobtaskid"/>
+		<result column="satelliteid" property="satelliteid"/>
+		<result column="sensorid" property="sensorid"/>
+		<result column="band" property="band"/>
+		<result column="scenestarttime" property="scenestarttime" />
+        <result column="sceneendtime" property="sceneendtime"/>
+		<result column="filepath" property="filepath" />
+		<result column="notecreatetime" property="notecreatetime"/>
+		<result column="filecreatetime" property="filecreatetime"/>
+		<result column="l1acounter" property="l1acounter"/>
+		<result column="l2acounter" property="l2acounter"/>
+		<result column="station" property="station"/>
+		<result column="content" property="content"/>
+		<result column="stauts" property="stauts"/>
+		<result column="L1productId" property="L1productId"/>
+		<result column="L2productId" property="L2productId"/>
+	</resultMap>
+
+	<parameterMap id="mCatParamMap" type="mCat">
+		<parameter property="id" resultMap="mCatMap"/>
+		<parameter property="sceneid" resultMap="mCatMap"/>
+		<parameter property="segmentid" resultMap="mCatMap"/>
+		<parameter property="jobtaskid" resultMap="mCatMap"/>
+		<parameter property="satelliteid" resultMap="mCatMap"/>
+		<parameter property="sensorid" resultMap="mCatMap"/>
+		<parameter property="band" resultMap="mCatMap"/>
+		<parameter property="scenestarttime" resultMap="mCatMap"/>
+		<parameter property="sceneendtime" resultMap="mCatMap"/>
+		<parameter property="filepath" resultMap="mCatMap"/>
+		<parameter property="notecreatetime" resultMap="mCatMap"/>
+		<parameter property="filecreatetime" resultMap="mCatMap"/>
+		<parameter property="l1acounter" resultMap="mCatMap"/>
+		<parameter property="l2acounter" resultMap="mCatMap"/>
+		<parameter property="station" resultMap="mCatMap"/>
+		<parameter property="content" resultMap="mCatMap"/>
+		<parameter property="stauts" resultMap="mCatMap"/>
+		<parameter property="L1productId" resultMap="mCatMap"/>
+		<parameter property="L2productId" resultMap="mCatMap"/>
+	</parameterMap>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		gt_m_cat
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		id,
+		sceneid,
+		segmentid,
+		jobtaskid,
+		satelliteid,
+		sensorid,
+		band,
+		scenestarttime,
+		sceneendtime,
+		filepath,
+		notecreatetime,
+		filecreatetime,
+		l1acounter,
+		l2acounter,
+		station,
+		content,
+		stauts
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{id},
+		#{sceneid},
+		#{segmentid},
+		#{jobtaskid},
+		#{satelliteid},
+		#{sensorid},
+		#{band},
+		#{scenestarttime},
+		#{sceneendtime},
+		#{filepath},
+		#{notecreatetime},
+		#{filecreatetime},
+		#{l1acounter},
+		#{l2acounter},
+		#{station},
+		#{content},
+		#{stauts}
+	</sql>
+
+	<!-- 通过ID获取数据 -->
+	<select id="mcatlistPage" parameterType="page" resultType="pd">
+		select t.*,L1.productid L1productId ,L2.productid L2productId
+		from gt_m_cat t LEFT JOIN gt_m_l1 L1 on t.sceneid = L1.sceneid LEFT JOIN gt_m_l2 L2 on L1.productid = L2.productid_l1a
+		where 1=1
+		<if test="pd.satelliteId!=null and pd.satelliteId!=''">
+			and t.satelliteid = #{pd.satelliteId}
+		</if>
+		<if test="pd.jobtaskId!=null and pd.jobtaskId!=''">
+			and t.jobtaskid = #{pd.jobtaskId}
+		</if>
+		<if test="pd.beginTime!=null and pd.beginTime!=''and pd.endTime!=null and pd.endTime!=''">
+			and t.scenestarttime BETWEEN #{pd.beginTime} and #{pd.endTime}
+		</if>
+		<if test="pd.station!=null and pd.station!=''">
+			and t.station = #{pd.station}
+		</if>
+		order by t.notecreatetime desc
+	</select>
+
+</mapper>

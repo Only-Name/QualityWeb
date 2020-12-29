@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="signalDataMapper">
+
+	<resultMap id="gtmR0Map" type="gtmR0">
+		<id column="id" property="id" />
+		<result column="signalid" property="signalid" />
+		<result column="jobtaskid" property="jobtaskid"/>
+		<result column="satelliteid" property="satelliteid"/>
+		<result column="stationid" property="stationid"/>
+		<result column="channelid" property="channelid"/>
+		<result column="filepath" property="filepath" />
+		<result column="notecreatetime" property="notecreatetime"/>
+		<result column="receivestarttime" property="receivestarttime"/>
+		<result column="receiveendtime" property="receiveendtime"/>
+		<result column="filecreatetime" property="filecreatetime"/>
+		<result column="xmltypedata" property="xmltypedata"/>
+	</resultMap>
+	<parameterMap id="gtmR0ParamMap" type="gtmR0">
+		<parameter property="id" resultMap="gtmR0Map"/>
+		<parameter property="signalid" resultMap="gtmR0Map"/>
+		<parameter property="jobtaskid" resultMap="gtmR0Map"/>
+		<parameter property="satelliteid" resultMap="gtmR0Map"/>
+		<parameter property="stationid" resultMap="gtmR0Map"/>
+		<parameter property="channelid" resultMap="gtmR0Map"/>
+		<parameter property="filepath" resultMap="gtmR0Map"/>
+		<parameter property="notecreatetime" resultMap="gtmR0Map"/>
+		<parameter property="receivestarttime" resultMap="gtmR0Map"/>
+		<parameter property="receiveendtime" resultMap="gtmR0Map"/>
+		<parameter property="filecreatetime" resultMap="gtmR0Map"/>
+		<parameter property="xmltypedata" resultMap="gtmR0Map"/>
+	</parameterMap>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		gt_m_r0
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		id,
+		signalid,
+		jobtaskid,
+		satelliteid,
+		stationid,
+		channelid,
+		filepath,
+		notecreatetime,
+		receivestarttime,
+		receiveendtime,
+		filecreatetime,
+		xmltypedata
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{id},
+		#{signalid},
+		#{jobtaskid},
+		#{satelliteid},
+		#{stationid},
+		#{channelid},
+		#{filepath},
+		#{notecreatetime},
+		#{receivestarttime},
+		#{receiveendtime},
+		#{filecreatetime},
+		#{xmltypedata}
+	</sql>
+
+	<!-- 通过ID获取数据 -->
+	<select id="signalDatalistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where 1=1
+		<if test="pd.satelliteId!=null and pd.satelliteId!=''">
+			and satelliteid = #{pd.satelliteId}
+		</if>
+		<if test="pd.jobtaskId!=null and pd.jobtaskId!=''">
+			and jobtaskid = #{pd.jobtaskId}
+		</if>
+		<if test="pd.beginTime!=null and pd.beginTime!=''and pd.endTime!=null and pd.endTime!=''">
+			and receivestarttime BETWEEN #{pd.beginTime} and #{pd.endTime}
+		</if>
+		<if test="pd.station!=null and pd.station!=''">
+			and stationid = #{pd.station}
+		</if>
+	 	GROUP BY jobtaskid order by notecreatetime desc
+	</select>
+</mapper>

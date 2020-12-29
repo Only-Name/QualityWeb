@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DoubleBallMapper">
+
+	<resultMap type="doubleBall" id="doubleBallMap">
+		<id column="id" property="id"/>
+		<result column="date" property="date"/>
+		<result column="redball1" property="redball1"/>
+		<result column="redball2" property="redball2"/>
+		<result column="redball3" property="redball3"/>
+		<result column="redball4" property="redball4"/>
+		<result column="redball5" property="redball5"/>
+		<result column="redball6" property="redball6"/>
+		<result column="greenball1" property="greenball1"/>
+		<result column="supriseTime" property="supriseTime"/>
+	</resultMap>
+	<parameterMap id="doubleBallParamMap" type="doubleBall">
+		<parameter property="id" resultMap="doubleBallMap"/>
+		<parameter property="date" resultMap="doubleBallMap"/>
+		<parameter property="redball1" resultMap="doubleBallMap"/>
+		<parameter property="redball2" resultMap="doubleBallMap"/>
+		<parameter property="redball3" resultMap="doubleBallMap"/>
+		<parameter property="redball4" resultMap="doubleBallMap"/>
+		<parameter property="redball5" resultMap="doubleBallMap"/>
+		<parameter property="redball6" resultMap="doubleBallMap"/>
+		<parameter property="greenball1" resultMap="doubleBallMap"/>
+		<parameter property="supriseTime" resultMap="doubleBallMap"/>
+	</parameterMap>
+
+	<!--表名 -->
+	<sql id="tableName">
+		history_ball
+	</sql>
+	<!-- 字段 -->
+	<sql id="Field">
+		id,
+		date,
+		redball1,
+		redball2,
+		redball3,
+		redball4,
+		redball5,
+		redball6,
+		greenball1,
+		supriseTime
+	</sql>
+
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{id},
+		#{date},
+		#{redball1},
+		#{redball2},
+		#{redball3},
+		#{redball4},
+		#{redball5},
+		#{redball6},
+		#{greenball1},
+		#{suprisetime}
+	</sql>
+
+	<!-- 通过获取数据 -->
+	<select id="datalistPage" parameterType="page" resultMap="doubleBallMap" >
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where 1=1
+		<if test="pd.redball1!=null and pd.redball1!=''">
+			 and redball1 = #{pd.redball1}
+		</if>
+		<if test="pd.redball2!=null and pd.redball2!=''">
+			and redball1 = #{pd.redball2}
+		</if>
+		<if test="pd.redball3!=null and pd.redball3!=''">
+			and redball1 = #{pd.redball3}
+		</if>
+		<if test="pd.redball4!=null and pd.redball4!=''">
+			and redball1 = #{pd.redball4}
+		</if>
+		<if test="pd.redball5!=null and pd.redball5!=''">
+			and redball1 = #{pd.redball5}
+		</if>
+		<if test="pd.redball6!=null and pd.redball6!=''">
+			and redball6 = #{pd.redball6}
+		</if>
+		<if test="pd.greenball1!=null and pd.greenball1!=''">
+			and greenball1 = #{pd.greenball1}
+		</if>
+		<if test="pd.supriseTime!=null and pd.supriseTime!=''">
+			and supriseTime = #{pd.supriseTime}
+		</if>
+		order by date DESC
+	</select>
+</mapper>

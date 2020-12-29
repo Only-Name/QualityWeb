@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WorkFlowOrderMapper">
+
+	<resultMap id="WorkFlowOrderMap" type="WorkflowOrder">
+		<id column="taskSerialNumber" property="taskSerialNumber" />
+		<result column="orderType" property="orderType" />
+		<result column="taskPriority" property="taskPriority"/>
+		<result column="taskStatus" property="taskStatus"/>
+		<result column="taskMode" property="taskMode"/>
+		<result column="jobTaskID" property="jobTaskID"/>
+		<result column="channelID" property="channelID"/>
+		<result column="satelliteName" property="satelliteName"/>
+		<result column="sensorName" property="sensorName" />
+        <result column="orbitNumber" property="orbitNumber"/>
+		<result column="dataSelectType" property="dataSelectType" />
+		<result column="receiveStartTime" property="receiveStartTime"/>
+		<result column="receiveEndTime" property="receiveEndTime"/>
+		<result column="sensorStartTime" property="sensorStartTime"/>
+		<result column="sensorEndTime" property="sensorEndTime"/>
+		<result column="sceneID" property="sceneID"/>
+		<result column="signalID" property="signalID"/>
+		<result column="productLevel" property="productLevel" />
+		<result column="out_productdir" property="out_productdir"/>
+		<result column="orderStatus" property="orderStatus"/>
+		<result column="xmltypedata" property="xmltypedata"/>
+		<result column="startTime" property="startTime" jdbcType="TIMESTAMP"/>
+		<result column="endTime" property="endTime" jdbcType="TIMESTAMP"/>
+		<result column="comment" property="comment"/>
+		<result column="oper" property="oper" />
+		<result column="resampleKernal" property="resampleKernal" />
+		<result column="station" property="station"/>
+		<result column="logName" property="logName"/>
+		<result column="logPath" property="logPath"/>
+		<result column="fileResource" property="fileResource"/>
+	</resultMap>
+	<parameterMap id="WorkflowOrderParamMap" type="WorkflowOrder">
+		<parameter property="orderType" resultMap="WorkflowOrderMap"/>
+		<parameter property="taskSerialNumber" resultMap="WorkflowOrderMap"/>
+		<parameter property="taskPriority" resultMap="WorkflowOrderMap"/>
+		<parameter property="taskStatus" resultMap="WorkflowOrderMap"/>
+		<parameter property="taskMode" resultMap="WorkflowOrderMap"/>
+		<parameter property="jobTaskID" resultMap="WorkflowOrderMap"/>
+		<parameter property="channelID" resultMap="WorkflowOrderMap"/>
+		<parameter property="satelliteName" resultMap="WorkflowOrderMap"/>
+		<parameter property="sensorName" resultMap="WorkflowOrderMap"/>
+		<parameter property="orbitNumber" resultMap="WorkflowOrderMap"/>
+		<parameter property="dataSelectType" resultMap="WorkflowOrderMap"/>
+		<parameter property="receiveStartTime" resultMap="WorkflowOrderMap"/>
+		<parameter property="receiveEndTime" resultMap="WorkflowOrderMap"/>
+		<parameter property="sensorStartTime" resultMap="WorkflowOrderMap"/>
+		<parameter property="sensorEndTime" resultMap="WorkflowOrderMap"/>
+		<parameter property="sceneID" resultMap="WorkflowOrderMap"/>
+		<parameter property="signalID" resultMap="WorkflowOrderMap"/>
+		<parameter property="productLevel" resultMap="WorkflowOrderMap"/>
+		<parameter property="out_productdir" resultMap="WorkflowOrderMap"/>
+		<parameter property="orderStatus" resultMap="WorkflowOrderMap"/>
+		<parameter property="xmltypedata" resultMap="WorkflowOrderMap"/>
+		<parameter property="startTime" resultMap="WorkflowOrderMap"/>
+		<parameter property="endTime" resultMap="WorkflowOrderMap"/>
+		<parameter property="comment" resultMap="WorkflowOrderMap"/>
+		<parameter property="oper" resultMap="WorkflowOrderMap"/>
+		<parameter property="resampleKernal" resultMap="WorkflowOrderMap"/>
+		<parameter property="station" resultMap="WorkflowOrderMap"/>
+		<parameter property="logName" resultMap="WorkflowOrderMap"/>
+		<parameter property="logPath" resultMap="WorkflowOrderMap"/>
+		<parameter property="fileResource" resultMap="WorkflowOrderMap"/>
+	</parameterMap>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		workflow_order
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		orderType,
+		taskSerialNumber,
+		taskPriority,
+		taskStatus,
+		taskMode,
+		jobTaskID,
+		channelID,
+		satelliteName,
+		sensorName,
+		orbitNumber,
+		dataSelectType,
+		receiveStartTime,
+		receiveEndTime,
+		sensorStartTime,
+		sensorEndTime,
+		sceneID,
+		signalID,
+		productLevel,
+		out_productdir,
+		orderStatus,
+		xmltypedata,
+		startTime,
+		endTime,
+		comment,
+		oper,
+		resampleKernal,
+		station,
+		logName,
+		logPath,
+		fileResource
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{orderType},
+		#{taskSerialNumber},
+		#{taskPriority},
+		#{taskStatus},
+		#{taskMode},
+		#{jobTaskID},
+		#{channelID},
+		#{satelliteName},
+		#{sensorName},
+		#{orbitNumber},
+		#{dataSelectType},
+		#{receiveStartTime},
+		#{receiveEndTime},
+		#{sensorStartTime},
+		#{sensorEndTime},
+		#{sceneID},
+		#{signalID},
+		#{productLevel},
+		#{out_productdir},
+		#{orderStatus},
+		#{xmltypedata},
+		#{startTime},
+		#{endTime},
+		#{comment},
+		#{oper},
+		#{resampleKernal},
+		#{station},
+		#{logName},
+		#{logPath},
+		#{fileResource}
+	</sql>
+
+	<select id="selectList" parameterType="String" resultMap="WorkFlowOrderMap">
+		select
+			<include refid="Field"></include>
+		from
+			<include refid="tableName"></include>
+		where 1=1 and orderStatus = #{orderStatus} order by taskPriority desc,startTime ASC limit 5
+	</select>
+
+	<select id="findList" parameterType="String" resultMap="WorkFlowOrderMap">
+		select
+			<include refid="Field"></include>
+		from
+			<include refid="tableName"></include>
+		where jobtaskId=#{jobtaskid}
+	</select>
+	<!-- 新增-->
+	<insert id="save" parameterMap="WorkflowOrderParamMap">
+		insert into 
+			<include refid="tableName"></include>
+		(
+			<include refid="Field"></include>
+		) values (
+			<include refid="FieldValue"></include>
+		)
+	</insert>
+	<!-- 修改 -->
+	<update id="updateOrder" parameterMap="WorkflowOrderParamMap">
+		update
+		<include refid="tableName"></include>
+		<set>
+			<if test="orderType!=null">orderType = #{orderType},</if>
+			<if test="taskPriority!=null">taskPriority = #{taskPriority},</if>
+			<if test="taskStatus!=null">taskStatus = #{taskStatus},</if>
+			<if test="taskMode!=null">taskMode = #{taskMode},</if>
+			<if test="jobTaskID!=null">jobTaskID = #{jobTaskID},</if>
+			<if test="channelID!=null">channelID = #{channelID},</if>
+			<if test="satelliteName!=null">satelliteName = #{satelliteName},</if>
+			<if test="sensorName!=null">sensorName = #{sensorName},</if>
+			<if test="orbitNumber!=null">orbitNumber = #{orbitNumber},</if>
+			<if test="dataSelectType!=null">dataSelectType = #{dataSelectType},</if>
+			<if test="receiveStartTime!=null">receiveStartTime = #{receiveStartTime},</if>
+			<if test="receiveEndTime!=null">receiveEndTime = #{receiveEndTime},</if>
+			<if test="sensorStartTime!=null">sensorStartTime = #{sensorStartTime},</if>
+			<if test="sensorEndTime!=null">sensorEndTime = #{sensorEndTime},</if>
+			<if test="sceneID!=null">sceneID = #{sceneID},</if>
+			<if test="signalID!=null">signalID = #{signalID},</if>
+			<if test="productLevel!=null">productLevel = #{productLevel},</if>
+			<if test="out_productdir!=null">out_productdir = #{out_productdir},</if>
+			<if test="orderStatus!=null">orderStatus = #{orderStatus},</if>
+			<if test="xmltypedata!=null">xmltypedata = #{xmltypedata},</if>
+			<if test="startTime!=null">startTime = #{startTime},</if>
+			<if test="endTime!=null">endTime = #{endTime},</if>
+			<if test="comment!=null">comment = #{comment},</if>
+			<if test="oper!=null">oper = #{oper},</if>
+			<if test="resampleKernal!=null">resampleKernal = #{resampleKernal},</if>
+			<if test="station!=null">station = #{station},</if>
+			<if test="logName!=null">logName = #{logName},</if>
+			<if test="logPath!=null">logPath = #{logPath},</if>
+			<if test="fileResource!=null">fileResource = #{fileResource},</if>
+		</set>
+		where
+		taskSerialNumber = #{taskSerialNumber}
+	</update>
+
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="String" resultMap="WorkFlowOrderMap">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where
+		taskSerialNumber = #{taskId}
+	</select>
+	<!--通过ID获取日志路径-->
+	<select id="selectLogUrl" parameterType="String" resultType="String">
+		SELECT
+		 logPath
+		 FROM
+		<include refid="tableName"></include>
+		where
+		taskSerialNumber = #{taskId}
+	</select>
+	<select id="findDataskByJobId" parameterType="String"  resultMap="WorkFlowOrderMap">
+		SELECT
+		<include refid="Field"></include>
+		FROM
+		<include refid="tableName"></include>
+		where jobTaskID = #{jobTaskId} and taskMode='DATask' order BY  startTime desc limit 1
+	</select>
+
+	<select id="reportlistPage" resultMap="WorkFlowOrderMap">
+		select * from workflow_order t where t.orderType like 'QATask_%' and t.orderStatus='3'
+		<if test="pd.beginTime!= '' and pd.beginTime!= null and pd.endTime!=''and pd.endTime!=null ">
+			and left(t.startTime,18) &gt;= #{pd.beginTime} and  left(t.startTime,18) &lt;= #{pd.endTime}
+		</if>
+		<if test="pd.jobtaskId!='' and pd.jobtaskId!=null">
+			and jobtaskId = #{pd.jobtaskId}
+		</if>
+		<if test="pd.taskSerialNumber!='' and pd.taskSerialNumber!=null">
+			and taskSerialNumber = #{pd.taskSerialNumber}
+		</if>
+		ORDER BY t.startTime DESC
+	</select>
+	<select id="orderlistPage"  parameterType="page" resultType="pd">
+		select <include refid="Field"></include>
+			from <include refid="tableName"></include> where 1=1
+		<if test="pd.satelliteId!='' and pd.satelliteId!=null">
+			and satelliteName = #{pd.satelliteId}
+		</if>
+		<if test="pd.beginTime!= '' and pd.beginTime!= null and pd.endTime!=''and pd.endTime!=null ">
+			and left(startTime,18) &gt;= #{pd.beginTime} and  left(startTime,18) &lt;= #{pd.endTime}
+		</if>
+		<if test="pd.taskMode!='' and pd.taskMode!=null">
+			and taskMode = #{pd.taskMode}
+		</if>
+		<if test="pd.jobtaskId != '' and pd.jobtaskId != null">
+			and jobTaskID = #{pd.jobtaskId}
+		</if>
+		<if test="pd.taskSerialNumber!='' and pd.taskSerialNumber!=null">
+			and taskSerialNumber = #{pd.taskSerialNumber}
+		</if>
+		order by startTime desc
+	</select>
+
+	<select id="getJobCount" parameterType="pd" resultType="String">
+		select COUNT(*) from
+			<include refid="tableName"></include>
+		where 1=1
+		  <if test="orderType!=''and orderType!=null">
+			  and orderType like #{orderType}
+		  </if>
+		  <if test="orderStatus!='' and orderStatus!=null">
+			  and orderStatus = #{orderStatus}
+		  </if>
+		   and  startTime like #{date}
+	</select>
+
+	<!-- 删除 -->
+	<delete id="delOrder" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where taskSerialNumber = #{platform}
+	</delete>
+</mapper>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jobInfoMapper">
+	<resultMap id="jobInfoMap" type="jobInfo">
+		<id column="jobId" property="jobId" />
+		<result column="taskId" property="taskId" />
+		<result column="pbsId" property="pbsId"/>
+		<result column="moduleId" property="moduleId"/>
+		<result column="jobResult" property="jobResult"/>
+		<result column="metaPath" property="metaPath"/>
+		<result column="orderFile" property="orderFile" />
+		<result column="scriptFile" property="scriptFile"/>
+		<result column="resultFile" property="resultFile"/>
+		<result column="errFile" property="errFile"/>
+		<result column="outFile" property="outFile"/>
+		<result column="node" property="node"/>
+		<result column="status" property="status"/>
+		<result column="createTime" property="createTime" />
+		<result column="beginTime" property="beginTime"/>
+		<result column="endTime" property="endTime"/>
+		<result column="queue" property="queue"/>
+		<result column="priority" property="priority"/>
+		<result column="cpuNum" property="cpuNum"/>
+		<result column="gpuNum" property="gpuNum"/>
+		<result column="mem" property="mem" />
+		<result column="wallTime" property="wallTime"/>
+		<result column="nodeNum" property="nodeNum"/>
+	</resultMap>
+	<parameterMap id="jobInfoParamMap" type="jobInfo">
+		<parameter property="jobId" resultMap="jobInfoMap"/>
+		<parameter property="taskId" resultMap="jobInfoMap"/>
+		<parameter property="pbsId" resultMap="jobInfoMap"/>
+		<parameter property="moduleId" resultMap="jobInfoMap"/>
+		<parameter property="jobResult" resultMap="jobInfoMap"/>
+		<parameter property="metaPath" resultMap="jobInfoMap"/>
+		<parameter property="orderFile" resultMap="jobInfoMap"/>
+		<parameter property="scriptFile" resultMap="jobInfoMap"/>
+		<parameter property="resultFile" resultMap="jobInfoMap"/>
+		<parameter property="errFile" resultMap="jobInfoMap"/>
+		<parameter property="outFile" resultMap="jobInfoMap"/>
+		<parameter property="node" resultMap="jobInfoMap"/>
+		<parameter property="status" resultMap="jobInfoMap"/>
+		<parameter property="createTime" resultMap="jobInfoMap"/>
+		<parameter property="beginTime" resultMap="jobInfoMap"/>
+		<parameter property="endTime" resultMap="jobInfoMap"/>
+		<parameter property="queue" resultMap="jobInfoMap"/>
+		<parameter property="priority" resultMap="jobInfoMap"/>
+		<parameter property="cpuNum" resultMap="jobInfoMap"/>
+		<parameter property="gpuNum" resultMap="jobInfoMap"/>
+		<parameter property="mem" resultMap="jobInfoMap"/>
+		<parameter property="wallTime" resultMap="jobInfoMap"/>
+		<parameter property="nodeNum" resultMap="jobInfoMap"/>
+	</parameterMap>
+
+	<!--表名 -->
+	<sql id="tableName">
+		pd_jobinfo
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		jobId,
+		taskId,
+		pbsId,
+		moduleId,
+		jobResult,
+		metaPath,
+		orderFile,
+		scriptFile,
+		resultFile,
+		errFile,
+		outFile,
+		node,
+		status,
+		createTime,
+		beginTime,
+		endTime,
+		queue,
+		priority,
+		cpuNum,
+		gpuNum,
+		mem,
+		wallTime,
+		nodeNum
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{jobId},
+		#{taskId},
+		#{pbsId},
+		#{moduleId},
+		#{jobResult},
+		#{metaPath},
+		#{orderFile},
+		#{scriptFile},
+		#{resultFile},
+		#{errFile},
+		#{outFile},
+		#{node},
+		#{status},
+		#{createTime},
+		#{beginTime},
+		#{endTime},
+		#{queue},
+		#{priority},
+		#{cpuNum},
+		#{gpuNum},
+		#{mem},
+		#{wallTime},
+		#{nodeNum}
+	</sql>
+
+	<!-- 列表 -->
+	<select id="findJobInfo" parameterType="pd" resultMap="jobInfoMap">
+		select * from pd_jobinfo where taskId = #{taskId}
+	</select>
+
+</mapper>

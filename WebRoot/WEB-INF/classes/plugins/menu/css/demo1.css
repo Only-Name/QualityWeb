@@ -1,0 +1,189 @@
+*{
+    margin:0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+body{
+	background-color: #dcdcdc;
+}
+.wrapper{
+    max-width:900px;
+    margin:45px auto;
+    -webkit-flex: 1;
+    -moz-flex: 1;
+}
+.wrapper li{
+    position: relative;
+    width: 200px;
+    height: 200px;
+    list-style:none;
+    margin: 5px;
+    display: inline-block;
+    perspective: 300px;
+  }
+  .picBox{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform-style: preserve-3d;
+    transform-origin: 50% 50% -90px;
+    animation: 200ms ease-out 0ms 1 normal forwards;
+  }
+
+.show,
+.hide{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+.hide{
+    color:#fff;
+    background-color:#000;
+    text-align:center;
+    line-height:200px;
+    transform: translate3d(0,0,-1px);
+    /* 3D空间内移动一个元素的位置 */
+}
+
+
+.in-top .hide,
+.out-top .hide
+ {
+    transform-origin: 0% 100%;
+    transform: translate3d(0, -100%, 0) rotate3d(1,0,0,90deg);
+}
+.in-top .picBox{
+    animation-name: in-top;
+    animation-play-state: running;
+}
+.out-top .picBox{
+    animation-name: out-top;
+    animation-play-state: running;
+}
+@keyframes in-top {
+    from  {transform: rotate3d(0,0,0,0deg)}
+    to    {transform: rotate3d(-1,0,0,90deg)}
+} 
+
+@keyframes out-top {
+    from {transform: rotate3d(-1,0,0,90deg)}
+    to   {transform: rotate3d(0,0,0,0deg)}
+}
+.in-right .hide,
+.out-right .hide {
+          transform-origin: 0% 0%;
+          transform: translate3d(100%, 0, 0) rotate3d(0,1,0,90deg);
+}
+.in-right .picBox{
+    animation-name: in-right;
+    animation-play-state: running;
+}
+.out-right .picBox{
+    animation-name: out-right;
+    animation-play-state: running;
+}
+@keyframes in-right {
+    from  {transform: rotate3d(0,0,0,0deg)}
+    to    {transform: rotate3d(0,-1,0,90deg)}
+}
+
+@keyframes out-right {
+    from  {transform: rotate3d(0,-1,0,90deg)}
+    to    {transform: rotate3d(0,0,0,0deg)}
+}
+
+.in-bottom .hide,
+.out-bottom .hide {
+          transform-origin: 0% 0%;
+          transform: translate3d(0, 100%, 0) rotate3d(-1,0,0,90deg);
+}
+.in-bottom .picBox{
+    animation-name: in-bottom;
+    animation-play-state: running;
+}
+.out-bottom .picBox{
+    animation-name: out-bottom;
+    animation-play-state: running;
+}
+@keyframes in-bottom {
+    from  {transform: rotate3d(0,0,0,0deg)}
+    to    {transform: rotate3d(1,0,0,90deg)}
+}
+@keyframes out-bottom {
+    from  {transform: rotate3d(1,0,0,90deg)}
+    to    {transform: rotate3d(0,0,0,0deg)}
+}
+.in-left .hide,
+.out-left .hide {
+          transform-origin: 100% 0;
+          transform: translate3d(-100%,0,0) rotate3d(0,-1,0,90deg);
+}
+@keyframes in-left {
+    from  {transform: rotate3d(0,0,0,0deg)}
+    to    {transform: rotate3d(0,1,0,90deg)}
+}
+@keyframes out-left {
+    from  {transform: rotate3d(0,1,0,90deg)}
+    to    {transform: rotate3d(0,0,0,0deg)}
+}
+.in-left .picBox{
+          animation-name: in-left;
+          animation-play-state: running;
+}
+.out-left .picBox{
+          animation-name: out-left;
+          animation-play-state: running;
+}
+
+
+body {
+    background: url(../../../static/images/dept/bg.png) no-repeat;
+    background-size: 100% 100%;
+    display: -webkit-flex;
+    display: -moz-flex;
+    -webkit-flex-direction: column;
+    -moz-flex-direction: column;
+}
+
+.top-inner .logo {
+    position: relative;
+    font-size: 18px;
+}
+
+.top-inner .logo:after {
+    position: absolute;
+    left: -125px;
+    top: -20px;
+    content: '';
+    background: url(../img/web/logo.png) no-repeat;
+    background-size: 120px 66px;
+    width: 120px;
+    height: 60px;
+
+}
+
+.descrb {
+    height: 63px;
+    text-align: left;
+    font-size: 16px;
+    color: white;
+    margin-top: 10px;
+}
+
+.top {
+    height: 85px;
+}
+
+html,body {
+    width: 100%;
+    height: 100%;
+}
+
+
+

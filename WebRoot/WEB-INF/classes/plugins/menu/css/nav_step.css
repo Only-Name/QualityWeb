@@ -1,0 +1,68 @@
+ol {list-style: none; clear: both}
+.format-exp ol li {
+    border-left: 2px dotted #e4e4e4;
+    padding: 5px 0 10px 23px;
+    display: block;
+    position: relative;
+    min-height: 31px;
+}
+.list-icon {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    left: -18px;
+    font-size: 16px;
+    color: #efe;
+    text-align: center;
+    line-height: 32px;
+    top: 1px;
+    background: url('../img/web/step_ol_bg_e53cfaf.png') no-repeat;
+}
+
+.list-icon-link {
+    width: 32px;
+    height: 34px;
+    display: block;
+    font-size: 16px;
+    text-decoration: none;
+    cursor: pointer;
+    color: #fff;
+    text-align: center;
+    line-height: 32px;
+    background: url('../img/web/step_ico_bg_aa799a7.png') no-repeat 0 -68px;
+    position: relative;
+    z-index: 10;
+}
+.list-icon-link:hover {
+    background-position: 0 0;
+    text-decoration: none;
+    color: #fff;
+}
+.order-ico-group:hover{
+    background-color: #FFF;
+    width: 290px;
+}
+.order-ico-group:hover .list-icon-title{
+    opacity: 1;
+}
+.list-icon-current {
+    background-position: 0 0;
+}
+.list-icon-title {
+    float: right;
+    position: fixed;
+    padding-left: 41px;
+    color: #000;
+    font-size: 22px;
+    font-family: 华文楷体;
+    font-weight: bold;
+    padding-top: 2px;
+    cursor: pointer;
+    display: none;
+    opacity: 0;
+}
+.list-icon-title:hover {
+    background-position: 0 0;
+    text-decoration: none;
+    color: #000;
+}

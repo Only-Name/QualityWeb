@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shellInfoMapper">
+
+	<resultMap id="shellInfoMap" type="shellInfo">
+		<id column="id" property="id" />
+		<result column="start_shell" property="start_shell" />
+		<result column="stop_shell" property="stop_shell"/>
+		<result column="ip_number" property="ip_number"/>
+		<result column="user_name" property="user_name"/>
+		<result column="password_id" property="password_id"/>
+		<result column="comment" property="comment" />
+	</resultMap>
+	<parameterMap id="shellInfoParamMap" type="shellInfo">
+		<parameter property="id" resultMap="shellInfoMap"/>
+		<parameter property="start_shell" resultMap="shellInfoMap"/>
+		<parameter property="stop_shell" resultMap="shellInfoMap"/>
+		<parameter property="ip_number" resultMap="shellInfoMap"/>
+		<parameter property="user_name" resultMap="shellInfoMap"/>
+		<parameter property="password_id" resultMap="shellInfoMap"/>
+		<parameter property="comment" resultMap="shellInfoMap"/>
+	</parameterMap>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		sys_shellInfo
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		id,
+		start_shell,
+		stop_shell,
+		ip_number,
+		user_name,
+		password_id,
+		comment
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{id},
+		#{start_shell},
+		#{stop_shell},
+		#{ip_number},
+		#{user_name},
+		#{password_id},
+		#{comment}
+	</sql>
+
+	<!-- 通过ID获取数据 -->
+	<select id="shellInfolistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where 1=1
+	</select>
+
+	<select id="selectShell" parameterType="pd" resultMap="shellInfoMap">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where id = #{id}
+	</select>
+	<!--新增-->
+	<update id="saveShell" parameterType="pd">
+		insert into <include refid="tableName"></include> (
+		<include refid="Field"></include>
+		) values (
+		<include refid="FieldValue"></include>
+		)
+	</update>
+	<!--修改-->
+	<update id="updateShell" parameterType="pd">
+		update  <include refid="tableName"></include>
+		set
+		<if test="start_shell != null and start_shell != ''">start_shell = #{start_shell},</if>
+		<if test="stop_shell != null and stop_shell != ''">stop_shell= #{stop_shell},</if>
+		<if test="ip_number != null and ip_number != ''">ip_number= #{ip_number},</if>
+		<if test="user_name != null and user_name != ''">user_name= #{user_name},</if>
+		<if test="password_id != null and password_id != ''">password_id= #{password_id},</if>
+		<if test="comment != null and comment != ''">comment= #{comment}</if>
+		where
+		id = #{id}
+	</update>
+	<delete id="delShell" parameterType="pd">
+		delete  from <include refid="tableName"></include> where id = #{id}
+	</delete>
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="taskInfoMapper">
+
+	<resultMap id="taskInfoMap" type="TaskInfo">
+		<id column="taskId" property="taskId" />
+		<result column="orderId" property="orderId" />
+		<result column="taskName" property="taskName"/>
+		<result column="status" property="status"/>
+		<result column="nodeName" property="nodeName"/>
+		<result column="result" property="result"/>
+		<result column="createTime" property="createTime" />
+		<result column="beginTime" property="beginTime"/>
+		<result column="endTime" property="endTime"/>
+	</resultMap>
+	<parameterMap id="taskInfoParamMap" type="TaskInfo">
+		<parameter property="taskId" resultMap="taskInfoMap"/>
+		<parameter property="orderId" resultMap="taskInfoMap"/>
+		<parameter property="taskName" resultMap="taskInfoMap"/>
+		<parameter property="status" resultMap="taskInfoMap"/>
+		<parameter property="nodeName" resultMap="taskInfoMap"/>
+		<parameter property="result" resultMap="taskInfoMap"/>
+		<parameter property="createTime" resultMap="taskInfoMap"/>
+		<parameter property="beginTime" resultMap="taskInfoMap"/>
+		<parameter property="endTime" resultMap="taskInfoMap"/>
+	</parameterMap>
+
+	<!--表名 -->
+	<sql id="tableName">
+		pd_taskinfo
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		taskId,
+		orderId,
+		taskName,
+		status,
+		nodeName,
+		result,
+		createTime,
+		beginTime,
+		endTime
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{taskId},
+		#{orderId},
+		#{taskName},
+		#{status},
+		#{nodeName},
+		#{result},
+		#{createTime},
+		#{beginTime},
+		#{endTime}
+	</sql>
+
+	<!-- 列表 -->
+	<select id="getListByOrderid" parameterType="String" resultMap="taskInfoMap">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where
+			orderId = #{orderId}
+		order by CREATETIME asc
+	</select>
+
+	<!--查询任务订单下面所有的流程-->
+	<select id="selectListBytaskId" parameterType="pd" resultMap="taskInfoMap">
+		select * from pd_taskinfo t where t.orderId in(select orderId from pd_processinfo where platform = #{orderId}) order by t.createTime asc
+	</select>
+	<!-- 批量删除 -->
+	<delete id="delTaskInfo" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where orderid = #{orderId}
+	</delete>
+
+</mapper>

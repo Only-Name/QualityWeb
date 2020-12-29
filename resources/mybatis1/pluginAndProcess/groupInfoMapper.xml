@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="groupInfoMapper">
+
+	<resultMap type="groupInfo" id="groupAndpluginResultMap">
+		<id column="groupId" property="groupId"/>
+		<result column="groupName" property="groupName"/>
+		<result column="enabled" property="enabled"/>
+		<collection property="pluginInfo" column="defaultModuleId" ofType="pluginInfo">
+			<id column="defaultModuleId" property="defaultModuleId"/>
+			<result column="pluginName" property="pluginName"/>
+			<result column="displayName" property="displayName"/>
+			<result column="templateXml" property="templateXml"/>
+			<result column="createTime" property="createTime"/>
+			<result column="updateTime" property="updateTime"/>
+			<result column="version" property="version"/>
+			<result column="enabled" property="enabled"/>
+		</collection>
+	</resultMap>
+	<resultMap type="pluginInfo" id="pluginAndModuleResultMap">
+		<id column="defaultModuleId" property="defaultModuleId"/>
+		<result column="pluginName" property="pluginName"/>
+		<result column="displayName" property="displayName"/>
+		<result column="templateXml" property="templateXml"/>
+		<result column="createTime" property="createTime"/>
+		<result column="updateTime" property="updateTime"/>
+		<result column="version" property="version"/>
+		<result column="enabled" property="enabled"/>
+		<result column="groupId" property="group_Id"/>
+		<association property="moduleInfo" column="moduleInfoId" javaType="moduleInfo">
+			<id column="moduleInfoId" property="moduleInfoId"/>
+			<result column="pluginName" property="pluginName"/>
+			<result column="displayName" property="displayName"/>
+			<result column="publisher" property="publisher"/>
+			<result column="createTime" property="createTime"/>
+			<result column="updateTime" property="updateTime"/>
+			<result column="version" property="version"/>
+			<result column="nodeReq" property="nodeReq"/>
+			<result column="memReq" property="memReq"/>
+			<result column="cpuReq" property="cpuReq"/>
+			<result column="gpuReq" property="gpuReq"/>
+			<result column="wallTime" property="wallTime"/>
+			<result column="executeFile" property="executeFile"/>
+			<result column="queue" property="queue"/>
+		</association>
+	</resultMap>
+	<!--组-->
+	<resultMap type="groupInfo" id="groupInfoResultMap">
+		<id column="groupId" property="groupId"/>
+		<result column="groupName" property="groupName"/>
+		<result column="enabled" property="enabled"/>
+	</resultMap>
+	<!--插件-->
+	<resultMap id="pluginInfoMap" type="pluginInfo">
+		<id column="defaultModuleId" property="defaultModuleId"/>
+		<result column="pluginName" property="pluginName"/>
+		<result column="displayName" property="displayName"/>
+		<result column="templateXml" property="templateXml"/>
+		<result column="createTime" property="createTime"/>
+		<result column="updateTime" property="updateTime"/>
+		<result column="version" property="version"/>
+		<result column="enabled" property="enabled"/>
+		<result column="groupId" property="group_Id"/>
+	</resultMap>
+	<resultMap id="moduleInfoMap" type="moduleInfo">
+		<id column="moduleInfoId" property="moduleInfoId"/>
+		<result column="pluginName" property="pluginName"/>
+		<result column="displayName" property="displayName"/>
+		<result column="publisher" property="publisher"/>
+		<result column="createTime" property="createTime"/>
+		<result column="updateTime" property="updateTime"/>
+		<result column="version" property="version"/>
+		<result column="nodeReq" property="nodeReq"/>
+		<result column="memReq" property="memReq"/>
+		<result column="cpuReq" property="cpuReq"/>
+		<result column="gpuReq" property="gpuReq"/>
+		<result column="wallTime" property="wallTime"/>
+		<result column="executeFile" property="executeFile"/>
+		<result column="queue" property="queue"/>
+	</resultMap>
+	<!--表名 -->
+	<sql id="tableName">
+		groupinfo
+	</sql>
+	<sql id="pluginTableName">
+		plugininfo
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		groupId,
+		groupName,
+		enabled
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{groupId},
+		#{groupName},
+		#{enabled}
+	</sql>
+	
+	<!-- 通过用户ID获取用户信息和角色信息 -->
+	<select id="listAllgroupInfo" parameterType="String" resultMap="groupAndpluginResultMap">
+		select g.*,p.* from groupinfo g,plugininfo p where g.GroupID = p.GroupID
+	</select>
+	<select id="listAll" parameterType="String" resultMap="groupInfoResultMap">
+		select <include refid="Field"></include>
+		from <include refid="tableName"></include>
+	</select>
+	<insert id="save" parameterType="groupInfo">
+		insert into
+		<include refid="tableName"></include>
+		(
+		<include refid="Field"></include>
+		) values (
+		<include refid="FieldValue"></include>
+		)
+	</insert>
+	<insert id="savePlugin" parameterType="pd">
+		INSERT INTO plugininfo
+		(pluginName,displayName,TemplateXml,createTime,Version,Enabled,GroupID,DefaultModuleID)
+		VALUES
+		 (#{pluginName},#{displayName},#{templateXML},#{createTime},#{version},#{enabled},#{groupId},#{moduleId})
+	</insert>
+	<insert id="saveModule" parameterType="pd">
+		INSERT INTO moduleinfo
+		(ModuleId,PluginName,DisplayName,Publisher,CreateTime,Version,NodeReq,MemReq,CpuReq,GpuReq,WallTime,executeFile,Queue)
+		VALUES
+		(#{moduleId},#{pluginName},#{displayName},#{publisher},#{createTime},#{version},#{nodeReq},#{memReq},#{cpuReq},#{gpuReq},#{wallTime},#{executeFile},#{queue})
+	</insert>
+	<update id="editGroupInfo" parameterType="groupInfo">
+		UPDATE
+		<include refid="tableName"></include>
+		<set>
+			groupName = #{groupName}
+		</set>
+		where groupId = #{groupId}
+	</update>
+	<update id="editPluginInfo" parameterType="pd">
+		UPDATE
+		pluginInfo
+		<set>
+			<if test="pluginName!=null">pluginName = #{pluginName},</if>
+			<if test="displayName!=null">displayName = #{displayName},</if>
+			<if test="TemplateXml!=null">TemplateXml = #{TemplateXml},</if>
+			<if test="updateTime!=null">updateTime = #{updateTime},</if>
+			<if test="version!=null">version = #{version},</if>
+			<if test="enabled!=null">enabled = #{enabled},</if>
+			<if test="groupId!=null">groupId = #{groupId}</if>
+		</set>
+		WHERE DefaultModuleID = #{moduleId}
+	</update>
+	<update id="editModuleInfo"  parameterType="pd">
+			UPDATE
+			moduleInfo
+			<set>
+				<if test="pluginName!=null">pluginName = #{pluginName},</if>
+				<if test="displayName!=null">displayName = #{displayName},</if>
+				<if test="publisher!=null">publisher = #{publisher},</if>
+				<if test="updateTime!=null">updateTime = #{updateTime},</if>
+				<if test="version!=null">version = #{version},</if>
+				<if test="nodeReq!=null">nodeReq = #{nodeReq},</if>
+				<if test="memReq!=null">memReq = #{memReq},</if>
+				<if test="cpuReq!=null">cpuReq = #{cpuReq},</if>
+				<if test="gpuReq!=null">gpuReq = #{gpuReq},</if>
+				<if test="wallTime!=null">wallTime = #{wallTime},</if>
+				<if test="executeFile!=null">executeFile = #{executeFile},</if>
+				<if test="queue!=null">queue = #{queue}</if>
+			</set>
+		where moduleId = #{moduleId}
+	</update>
+	<select id="listpluginInfo" resultMap="pluginInfoMap">
+		select * from pluginInfo where 1=1
+	</select>
+	<select id="listAllplugin" parameterType="String" resultMap="pluginAndModuleResultMap">
+		select p.*,m.* from plugininfo p,moduleInfo m where p.defaultModuleId=m.moduleId AND p.groupId =#{groupId}
+	</select>
+	<select id="getpluginAndModule" parameterType="String" resultMap="pluginAndModuleResultMap">
+		select p.*,m.* from plugininfo p,moduleInfo m where p.defaultModuleId=m.moduleId AND p.defaultModuleId =#{moduleId}
+	</select>
+	<select id="getGroupInfoById" parameterType="pd" resultMap="groupInfoResultMap">
+		SELECT <include refid="Field"></include>
+		FROM <include refid="tableName"></include>
+		WHERE groupId = #{groupId}
+	</select>
+	<select id="selectTopModule" resultType="Integer">
+		select ModuleID from moduleinfo ORDER BY ModuleID desc limit 1
+	</select>
+</mapper>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="processInfoMapper">
+
+	<resultMap id="processInfoMap" type="ProcessInfo">
+		<id column="processId" property="processId" />
+		<result column="orderId" property="orderId" />
+		<result column="processType" property="processType"/>
+		<result column="processName" property="processName"/>
+		<result column="status" property="status"/>
+		<result column="creator" property="creator"/>
+		<result column="platform" property="platform"/>
+		<result column="sensor" property="sensor" />
+		<result column="priority" property="priority"/>
+		<result column="createTime" property="createTime" />
+		<result column="beginTime" property="beginTime" />
+		<result column="endTime" property="endTime"/>
+	</resultMap>
+	<parameterMap id="processInfoParamMap" type="ProcessInfo">
+		<parameter property="processId" resultMap="processInfoMap"/>
+		<parameter property="orderId" resultMap="processInfoMap"/>
+		<parameter property="processType" resultMap="processInfoMap"/>
+		<parameter property="processName" resultMap="processInfoMap"/>
+		<parameter property="status" resultMap="processInfoMap"/>
+		<parameter property="creator" resultMap="processInfoMap"/>
+		<parameter property="platform" resultMap="processInfoMap"/>
+		<parameter property="sensor" resultMap="processInfoMap"/>
+		<parameter property="priority" resultMap="processInfoMap"/>
+		<parameter property="createTime" resultMap="processInfoMap"/>
+		<parameter property="beginTime" resultMap="processInfoMap"/>
+		<parameter property="endTime" resultMap="processInfoMap"/>
+	</parameterMap>
+
+	<!--表名 -->
+	<sql id="tableName">
+		pd_processinfo
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		processId,
+		orderId,
+		processType,
+		processName,
+		status,
+		creator,
+		platform,
+		sensor,
+		priority,
+		createTime,
+		beginTime,
+		endTime
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{processId},
+		#{orderId},
+		#{processType},
+		#{processName},
+		#{status},
+		#{creator},
+		#{platform},
+		#{sensor},
+		#{priority},
+		#{createTime},
+		#{beginTime},
+		#{endTime}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into
+		<include refid="tableName"></include>
+		(
+		<include refid="Field"></include>	
+		) values (
+		<include refid="FieldValue"></include>	
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			CREATECODE_ID = #{CREATECODE_ID}
+	</delete>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 
+			CREATECODE_ID = #{CREATECODE_ID}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="processlistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where
+			1=1
+		<if test="pd.beginTime!= '' and pd.beginTime!= null and pd.endTime!=''and pd.endTime!=null ">
+			and left(createTime,18) &gt;= #{pd.beginTime} and  left(createTime,18) &lt;= #{pd.endTime}
+		</if>
+		<if test="pd.orderId!='' and pd.orderId!=null">
+			and orderId = #{pd.orderId}
+		</if>
+		<if test="pd.platform!='' and pd.platform!=null">
+			and platform = #{pd.platform}
+		</if>
+		order by CREATETIME desc
+	</select>
+	<select id="getProcess" parameterType="pd" resultMap="processInfoMap">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where orderid = #{orderId}
+	</select>
+
+	<!-- 批量删除 -->
+	<delete id="delProcess" parameterType="pd">
+		delete from
+	<include refid="tableName"></include>
+		where orderid = #{orderId}
+	</delete>
+
+	<select id="getCount" parameterType="pd" resultType="String">
+        select COUNT(*) from PD_ProcessInfo where createTime like #{date}
+        <if test="status!='' and status!=null">
+			and status = #{status};
+		</if>
+    </select>
+</mapper>
