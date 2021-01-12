@@ -98,7 +98,7 @@ public class LoginController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		String errInfo = "";
-		String KEYDATA[] = pd.getString("KEYDATA").replaceAll("qq313596790fh", "").replaceAll("QQ978336446fh", "").split(",fh,");
+		String KEYDATA[] = pd.getString("KEYDATA").replaceAll("WKTSSISjli", "").replaceAll("QQ978336446fh", "").split(",fh,");
 		if(null != KEYDATA && KEYDATA.length == 3){
 			Session session = Jurisdiction.getSession();
 			String sessionCode = (String)session.getAttribute(Const.SESSION_SECURITY_CODE);		//获取session中的验证码
@@ -156,7 +156,104 @@ public class LoginController extends BaseController {
 		map.put("result", errInfo);
 		return AppUtil.returnObject(new PageData(), map);
 	}
-	
+	/**访问系统首页
+	 * @param changeMenu：切换菜单参数
+	 * @return
+	 */
+	@RequestMapping(value="/main/index1")
+	public ModelAndView index1( String changeMenu){
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		try{
+			Session session = Jurisdiction.getSession();
+			User user = (User)session.getAttribute(Const.SESSION_USER);						//读取session中的用户信息(单独用户信息)
+			if (user != null) {
+				User userr = (User)session.getAttribute(Const.SESSION_USERROL);				//读取session中的用户信息(含角色信息)
+				if(null == userr){
+					user = userService.getUserAndRoleById(user.getUSER_ID());				//通过用户ID读取用户信息和角色信息
+					session.setAttribute(Const.SESSION_USERROL, user);						//存入session
+				}else{
+					user = userr;
+				}
+				String USERNAME = user.getUSERNAME();
+				Role role = user.getRole();													//获取用户角色
+				String roleRights = role!=null ? role.getRIGHTS() : "";						//角色权限(菜单权限)
+				session.setAttribute(USERNAME + Const.SESSION_ROLE_RIGHTS, roleRights); 	//将角色权限存入session
+				session.setAttribute(Const.SESSION_USERNAME, USERNAME);						//放入用户名到session
+				if(null == session.getAttribute(USERNAME + Const.SESSION_QX)){
+					session.setAttribute(USERNAME + Const.SESSION_QX, this.getUQX(USERNAME));//按钮权限放到session中
+				}
+				this.getRemortIP(USERNAME);	//更新登录IP
+				//todo 新增的内容
+				String year = DateUtil.getYear();
+				//todo 按类统计任务数
+				//归档
+				List<Map<String,String>>mapList = new ArrayList<>();
+				for (int i=1;i<13;i++){
+					if (i<10){
+						pd.put("date",year+"-0"+i+"%");
+						pd.put("orderType","DATask%");
+						pd.put("orderStatus","3");
+						pd.put("DaSuccCount"+i,workFlowOrderService.getJobCount(pd));
+						pd.put("orderStatus","4");
+						pd.put("DaFailCount"+i,workFlowOrderService.getJobCount(pd));
+						pd.put("orderType","QATask%");
+						pd.put("QaFailCount"+i,workFlowOrderService.getJobCount(pd));
+						mapList.add(pd);
+					}else {
+						pd.put("date",year+"-"+i+"%");
+						pd.put("orderType","DATask%");
+						pd.put("orderStatus","3");
+						pd.put("succCount"+i,workFlowOrderService.getJobCount(pd));
+						pd.put("orderStatus","4");
+						pd.put("failCount"+i,workFlowOrderService.getJobCount(pd));
+						mapList.add(pd);
+					}
+				}
+				//todo 统计1-12月任务总数
+
+				for (int i=1;i<13;i++){
+					pd.put("orderStatus","3");
+					if (i<10){
+						pd.put("date",year+"-0"+i+"%");
+						pd.put("jobCount"+i,workFlowOrderService.getJobCount(pd));
+					}else {
+						pd.put("date",year+"-"+i+"%");
+						pd.put("jobCount"+i,workFlowOrderService.getJobCount(pd));
+					}
+				}
+				//todo 根据时间统计作业数(只统计当月的)
+				pd.put("date",DateUtil.getSdfMonth()+"%");
+				String totalCount="",succCount="",failCount="",cancelCount="";
+				pd.put("status","");
+				totalCount = processInfoService.getCount(pd);
+				pd.put("status","Completed");
+				succCount = processInfoService.getCount(pd);
+				pd.put("status","Aborted");
+				failCount = processInfoService.getCount(pd);
+				pd.put("status","Cancelled");
+				cancelCount = processInfoService.getCount(pd);
+				pd.put("totalCount",totalCount);
+				pd.put("succCount",succCount);
+				pd.put("failCount",failCount);
+				pd.put("cancelCount",cancelCount);
+				mv.addObject("pd",pd);
+				mv.setViewName("system/index/main1");
+				//todo 到此结束
+				mv.addObject("user", user);
+				mv.addObject("SKIN", null == session.getAttribute(Const.SKIN)?user.getSKIN():session.getAttribute(Const.SKIN)); 	//用户皮肤
+			}else {
+				mv.setViewName("system/index/login");//session失效后跳转登录页面
+			}
+		} catch(Exception e){
+			mv.setViewName("system/index/login");
+			logger.error(e.getMessage(), e);
+		}
+		pd.put("SYSNAME", Tools.readTxtFile(Const.SYSNAME)); //读取系统名称
+		mv.addObject("pd",pd);
+		return mv;
+	}
 	/**访问系统首页
 	 * @param changeMenu：切换菜单参数
 	 * @return
